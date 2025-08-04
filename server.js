@@ -109,5 +109,5 @@ app.put('/edit-product/:id', (req, res) => {
   
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Dubz Gears POS running at http://localhost:${PORT}`);
 });
