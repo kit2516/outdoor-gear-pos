@@ -1,0 +1,33 @@
+<!-- admin/admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Add Product</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-container">
+    <div class="header">
+      <a href="/" class="back-btn">🏠 Back to Home</a>
+      <h2>Add New Product</h2>
+    </div>
+    
+    <form id="productForm" enctype="multipart/form-data">
+      <input type="text" id="name" placeholder="Product Name" required />
+      <input type="number" id="price" placeholder="Price" required />
+      <input type="file" id="image" accept="image/*" required />
+      <input type="number" id="stock" placeholder="Stock Quantity" required />
+      <button type="submit">Add Product</button>
+    </form>
+    <p id="message"></p>
+    
+
+    <hr>
+    <h2>Product List</h2>
+    <div id="productList" class="product-list"></div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
