@@ -56,8 +56,24 @@ let products = [];
 // Add Product API
 app.post('/add-product', upload.single('image'), (req, res) => {
     try {
+      console.log('Received add-product request');
+      console.log('Body:', req.body);
+      console.log('File:', req.file);
+      
+      if (!req.file) {
+        console.error('No image file uploaded');
+        return res.status(400).json({ error: 'Image file is required' });
+      }
+      
       const { name, price, stock } = req.body;
+      
+      if (!name || !price || !stock) {
+        console.error('Missing required fields');
+        return res.status(400).json({ error: 'All fields are required' });
+      }
+      
       const image = req.file.filename;
+      console.log('Creating product with:', { name, price, image, stock });
       
       const newProduct = db.add({
         name,
@@ -66,10 +82,11 @@ app.post('/add-product', upload.single('image'), (req, res) => {
         stock: parseInt(stock)
       });
       
+      console.log('Product created successfully:', newProduct);
       res.json({ message: 'Product added successfully!', id: newProduct.id });
     } catch (error) {
       console.error('Error adding product:', error);
-      res.status(500).json({ error: 'Failed to add product' });
+      res.status(500).json({ error: 'Failed to add product: ' + error.message });
     }
   });
   // Delete product
