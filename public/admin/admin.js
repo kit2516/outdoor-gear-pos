@@ -1,54 +1,30 @@
 document.getElementById('productForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  try {
-    console.log('Starting product addition...');
-    
-    const formData = new FormData();
-    formData.append('name', document.getElementById('name').value);
-    formData.append('price', document.getElementById('price').value);
-    formData.append('stock', document.getElementById('stock').value);
-    
-    const imageFile = document.getElementById('image').files[0];
-    if (!imageFile) {
-      alert('Please select an image file');
-      return;
-    }
-    formData.append('image', imageFile);
+  const formData = new FormData();
+formData.append('name', document.getElementById('name').value);
+formData.append('price', document.getElementById('price').value);
+formData.append('stock', document.getElementById('stock').value); // ➕ add this
+formData.append('image', document.getElementById('image').files[0]);
 
-    console.log('Sending request to /add-product...');
-    const response = await fetch('/add-product', {
-      method: 'POST',
-      body: formData,
-    });
+  const response = await fetch('/add-product', {
+    method: 'POST',
+    body: formData,
+  });
 
-    console.log('Response status:', response.status);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Server error:', errorText);
-      document.getElementById('message').textContent = 'Error: ' + errorText;
-      return;
-    }
+  const result = await response.json();
+  document.getElementById('message').textContent = result.message;
 
-    const result = await response.json();
-    console.log('Success:', result);
-    document.getElementById('message').textContent = result.message;
+  // Reset form
+  document.getElementById('productForm').reset();
 
-    // Reset form
-    document.getElementById('productForm').reset();
+  // Remove message
+  setTimeout(() => {
+    document.getElementById('message').textContent = '';
+  }, 1000);
 
-    // Remove message
-    setTimeout(() => {
-      document.getElementById('message').textContent = '';
-    }, 3000);
-
-    // Reload product list
-    loadProducts();
-  } catch (error) {
-    console.error('Client error:', error);
-    document.getElementById('message').textContent = 'Error: ' + error.message;
-  }
+  // Reload product list
+  loadProducts();
 });
 
 // 🔁 Load products and show them in admin page
